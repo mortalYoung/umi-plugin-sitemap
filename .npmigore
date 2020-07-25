@@ -1,0 +1,14 @@
+/example
+node_modules
+/src
+/test
+.editorconfig
+.fatherrc
+.gitignore
+.prettierignore
+.prettierrc
+tsconfig.json
+.changelog
+.DS_Store
+yarn.lock
+
