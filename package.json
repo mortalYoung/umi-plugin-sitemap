@@ -1,7 +1,8 @@
 {
   "name": "umi-plugin-sitemap",
   "main": "lib/index.js",
-  "description": "config sitemap",
+  "version": "0.1.0",
+  "description": "umi plugin for setting sitemap config",
   "authors": {
     "name": "mortalYoung",
     "email": "yangwei1@outlook.com"
