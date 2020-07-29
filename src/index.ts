@@ -16,7 +16,7 @@ const handlerCharacter = (origin: string) => {
   return origin;
 };
 
-// 把 route 转化成 string 对象
+// transform route to string
 const transformToSitemap = (
   suffix: string = '',
   routes: IRoute[],
@@ -41,10 +41,14 @@ export default function(api: IApi) {
 
   let routes: IRoute[] = [];
   api.onPatchRoutes(({ routes: routesConfig }) => {
-    routes = routes.concat(routesConfig);
+    // only concat destiny route which has destiny component and path
+    const destinyRoutes = routesConfig.filter(
+      route => !!route.component && !!route.path,
+    );
+    routes = routes.concat(destinyRoutes);
   });
 
-  // 在 build 完成之后生成 sitemap
+  // generate sitemap.xml after run build
   api.onBuildComplete(({ err }) => {
     try {
       if (!err) {
