@@ -16,6 +16,14 @@ const handlerCharacter = (origin: string) => {
   return origin;
 };
 
+/**
+ * assets dynamic route which have `:`
+ * @example isDynamicRoute({path: '/xxx/:slug' }) = true
+ */
+const isDynamicRoute = (route: IRoute) => {
+  return route.path?.indexOf(':') !== -1;
+};
+
 // transform route to string
 const transformToSitemap = (
   suffix: string = '',
@@ -41,9 +49,9 @@ export default function(api: IApi) {
 
   let routes: IRoute[] = [];
   api.onPatchRoutes(({ routes: routesConfig }) => {
-    // only concat destiny route which has destiny component and path
+    // only concat destiny route which has destiny component and path, expect dynamic route
     const destinyRoutes = routesConfig.filter(
-      route => !!route.component && !!route.path,
+      route => !!route.component && !!route.path && !isDynamicRoute(route),
     );
     routes = routes.concat(destinyRoutes);
   });
@@ -64,7 +72,10 @@ export default function(api: IApi) {
           .readFileSync(path.resolve(__dirname, './sitemap.mustache'))
           .toString();
 
-        const sitemapArray = transformToSitemap(homepage, routes, sitemap);
+        // remove duplicate route
+        const uniqueRoute = Array.from(new Set([...routes]));
+
+        const sitemapArray = transformToSitemap(homepage, uniqueRoute, sitemap);
 
         const html = Mustache.render(template, { sitemap: sitemapArray });
 
