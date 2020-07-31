@@ -1,7 +1,7 @@
 // ref:
 // - https://umijs.org/plugins/api
 import { IApi, IRoute } from '@umijs/types';
-import { Mustache, chalk } from '@umijs/utils';
+import { Mustache, chalk, lodash } from '@umijs/utils';
 import fs from 'fs';
 import path from 'path';
 
@@ -73,7 +73,7 @@ export default function(api: IApi) {
           .toString();
 
         // remove duplicate route
-        const uniqueRoute = Array.from(new Set([...routes]));
+        const uniqueRoute = lodash.uniqBy(routes, 'path');
 
         const sitemapArray = transformToSitemap(homepage, uniqueRoute, sitemap);
 
