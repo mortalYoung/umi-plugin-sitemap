@@ -8,7 +8,7 @@ import path from 'path';
 /**
  * remove lastet `/` flag
  */
-const handlerCharacter = (origin: string) => {
+export const handlerCharacter = (origin: string) => {
   if (origin.endsWith('/')) {
     const lastIndexof = origin.length - 1;
     return origin.slice(0, lastIndexof);
@@ -20,12 +20,12 @@ const handlerCharacter = (origin: string) => {
  * assets dynamic route which have `:`
  * @example isDynamicRoute({path: '/xxx/:slug' }) = true
  */
-const isDynamicRoute = (route: IRoute) => {
+export const isDynamicRoute = (route: IRoute) => {
   return route.path?.indexOf(':') !== -1;
 };
 
 // transform route to string
-const transformToSitemap = (
+export const transformToSitemap = (
   suffix: string = '',
   routes: IRoute[],
   dynamicRoute: string[],
