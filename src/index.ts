@@ -5,6 +5,8 @@ import { Mustache, chalk, lodash } from '@umijs/utils';
 import fs from 'fs';
 import path from 'path';
 
+type ISitemapCfg = string[] | { homepage: string; dynamicRoute?: string[] };
+
 /**
  * remove lastet `/` flag
  */
@@ -42,7 +44,12 @@ export default function(api: IApi) {
     key: 'sitemap',
     config: {
       schema(joi) {
-        return joi.array().items(joi.string());
+        const arrays = joi.array().items(joi.string());
+        const objects = joi.object({
+          dynamicRoute: joi.array().items(joi.string()),
+          homepage: joi.string().required(),
+        });
+        return joi.alternatives().try(arrays, objects);
       },
     },
   });
@@ -60,10 +67,18 @@ export default function(api: IApi) {
   api.onBuildComplete(({ err }) => {
     try {
       if (!err) {
-        const { homepage } = api.pkg;
+        let homepage;
+        let dynamicRoutes;
         const { absOutputPath } = api.paths;
-        const { sitemap = [] } = api.userConfig;
+        const { sitemap = [] } = <{ sitemap: ISitemapCfg }>api.userConfig;
 
+        if (Array.isArray(sitemap)) {
+          homepage = api.pkg.homepage;
+          dynamicRoutes = sitemap;
+        } else {
+          homepage = sitemap.homepage || api.pkg.homepage;
+          dynamicRoutes = sitemap.dynamicRoute || [];
+        }
         if (!homepage) {
           throw 'Compiled sitemap.xml failed, Please check your homepage';
         }
@@ -75,7 +90,11 @@ export default function(api: IApi) {
         // remove duplicate route
         const uniqueRoute = lodash.uniqBy(routes, 'path');
 
-        const sitemapArray = transformToSitemap(homepage, uniqueRoute, sitemap);
+        const sitemapArray = transformToSitemap(
+          homepage,
+          uniqueRoute,
+          dynamicRoutes,
+        );
 
         const html = Mustache.render(template, { sitemap: sitemapArray });
 
