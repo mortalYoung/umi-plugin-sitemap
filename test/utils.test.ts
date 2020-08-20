@@ -14,13 +14,13 @@ test('handlerCharacter', () => {
 
 test('isDynamicRoute', () => {
   // isnot dynamic route
-  expect(isDynamicRoute({ path: '/' })).toBeFalsy;
+  expect(isDynamicRoute({ path: '/' })).toBeFalsy();
 
   // isnot dynamic route
-  expect(isDynamicRoute({ path: '/test' })).toBeFalsy;
+  expect(isDynamicRoute({ path: '/test' })).toBeFalsy();
 
   // is dynamic route
-  expect(isDynamicRoute({ path: '/test/:slug' })).toBeTruthy;
+  expect(isDynamicRoute({ path: '/test/:slug' })).toBeTruthy();
 });
 
 test('transformToSitemap', () => {

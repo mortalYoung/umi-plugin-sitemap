@@ -1,5 +1,6 @@
 {
   "private": true,
+  "homepage": "https://umijs.org",
   "scripts": {
     "start": "umi dev",
     "build": "umi build",
