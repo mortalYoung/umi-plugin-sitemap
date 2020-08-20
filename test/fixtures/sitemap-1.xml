@@ -1,0 +1,11 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://umijs.org</loc>
+    </url> 
+    <url>
+        <loc>https://umijs.org/bar</loc>
+    </url> 
+    <url>
+        <loc>https://umijs.org/foo</loc>
+    </url> 
+</urlset>

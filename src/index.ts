@@ -47,7 +47,7 @@ export default function(api: IApi) {
         const arrays = joi.array().items(joi.string());
         const objects = joi.object({
           dynamicRoute: joi.array().items(joi.string()),
-          homepage: joi.string().required(),
+          homepage: joi.string(),
         });
         return joi.alternatives().try(arrays, objects);
       },
@@ -93,7 +93,7 @@ export default function(api: IApi) {
         const sitemapArray = transformToSitemap(
           homepage,
           uniqueRoute,
-          dynamicRoutes,
+          Array.from(new Set(dynamicRoutes)),
         );
 
         const html = Mustache.render(template, { sitemap: sitemapArray });
